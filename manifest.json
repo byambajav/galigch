@@ -1,0 +1,34 @@
+{
+    "name": "Krilleer",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "Krill keyboard",
+    "background": {
+	"scripts": ["background.js"]
+    },
+    "permissions": [
+	"activeTab",
+	"notifications",
+	"<all_urls>"
+    ],
+    "content_scripts": [
+	{
+	    "matches": ["<all_urls>"],
+	    "js": [
+                "jquery-1.11.1.min.js",
+                "frontend.js"
+            ],
+	    "run_at": "document_start",
+	    "all_frames": true
+	}
+    ],
+    "commands": {
+        "toggleMode" : {
+            "suggested_key": { "default": "Ctrl+M" },
+            "description": "Toggles mode"
+        }
+    },
+    "browser_action": {
+	"default_icon": "disabled.png"
+    }
+}
