@@ -1,21 +1,17 @@
 {
     "name": "Krilleer",
     "version": "1.0",
+    "author": "Byambajav Namsraijav / Намсрайжавын Бямбажав",
     "manifest_version": 2,
-    "description": "Krill keyboard",
+    "description": "Крилл галигаар шууд бичицгээе | krill | cyrillic",
     "background": {
 	"scripts": ["background.js"]
     },
-    "permissions": [
-	"activeTab",
-	"notifications",
-	"<all_urls>"
-    ],
     "content_scripts": [
 	{
 	    "matches": ["<all_urls>"],
 	    "js": [
-                "jquery-1.11.1.min.js",
+                "lib/jquery-1.11.1.min.js",
                 "frontend.js"
             ],
 	    "run_at": "document_start",
@@ -24,11 +20,14 @@
     ],
     "commands": {
         "toggleMode" : {
-            "suggested_key": { "default": "Ctrl+M" },
-            "description": "Toggles mode"
+            "suggested_key": {
+                "default": "Ctrl+M",
+                "mac": "Command+M"
+            },
+            "description": "Enables or disables the mode"
         }
     },
     "browser_action": {
-	"default_icon": "disabled.png"
+	"default_icon": "icons/disabled.png"
     }
 }
