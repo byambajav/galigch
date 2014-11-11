@@ -25,3 +25,10 @@ function toggleMode() {
         });
     }
 }
+
+/* Listens to messages from content scripts. */
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.message == "enabled") {
+        sendResponse({enabled: enabled});
+    }
+});
