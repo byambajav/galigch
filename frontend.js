@@ -1,10 +1,11 @@
 /* Register for key press. */
-window.addEventListener("keypress", onKeyPress, false);
+window.addEventListener("keypress", onKeyPress, true);
 
 function onKeyPress(event) {
     chrome.runtime.sendMessage({message: "enabled"}, function(response) {
         // Only remap key when in enabled mode and input is alphabet.
         if (response.enabled && isConvertible(event.which)) {
+            //alert("triggered");
             var target = event.target;
             var currentVal = $(target).getString();
             var posRes = $(target).getPosition();
