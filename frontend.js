@@ -1,18 +1,131 @@
 /* Register for key press. */
-$(document).on("keypress", function(e) {
+window.addEventListener("keypress", onKeyPress, false);
+
+function onKeyPress(event) {
     chrome.runtime.sendMessage({message: "enabled"}, function(response) {
         // Only remap key when in enabled mode and input is alphabet.
-        if (response.enabled && isConvertible(e.which)) {
-            var res = toMongolianCyrillic(e.which, $(e.target).val().slice(-2, -1));
+        if (response.enabled && isConvertible(event.which)) {
+            var target = event.target;
+            var currentVal = $(target).getString();
+            var posRes = $(target).getPosition();
+            var position = posRes.htmlPos;
+            var res = toMongolianCyrillic(event.which, currentVal.slice(position - 2, position - 1));
             if (!res.removePrev) {
-                $(e.target).val($(e.target).val().slice(0, -1) + res.converted);
+                $(target).setString(currentVal.slice(0, position - 1) + res.converted + currentVal.slice(position));
+                $(target).setPosition(posRes.pos);
             } else {
-                $(e.target).val($(e.target).val().slice(0, -2) + res.converted);
+                $(target).setString(currentVal.slice(0, position - 2) + res.converted + currentVal.slice(position));
+                $(target).setPosition(posRes.pos - 1);
             }
-            e.preventDefault();
         }
     });
+};
+
+function positionInHtml(textPos, html) {
+    var pos = 0; // position in html str
+    var charCount = 0; // number of text chars we encountered
+    var openedTags = 0;
+    var openedSpecialChars = 0;
+    while (true) {
+        switch (html.charAt(pos)) {
+        case "<":
+            openedTags += 1;
+            break;
+        case ">":
+            openedTags -= 1;
+            break;
+        case "&":
+            openedSpecialChars += 1;
+            break;
+        case ";":
+            openedSpecialChars -= 1;
+            charCount += 1;
+            break;
+        default:
+            if (openedTags <= 0 && openedSpecialChars <= 0) {
+                charCount += 1;
+                if (charCount >= textPos) {
+                    return pos + 1;
+                }
+            }
+        }
+        pos += 1;
+    }
+}
+
+$.fn.extend({
+    getString: function() {
+        var target = this[0];
+        var isContentEditable = target.contentEditable === "true";
+        return this[isContentEditable? 'html' : 'val']();
+    },
+
+    setString: function(str) {
+        var target = this[0];
+        var isContentEditable = target.contentEditable === "true";
+        this[isContentEditable? 'html' : 'val'](str);
+    },
+
+    /* Gets cursor position of target, ref: jquery/caret */
+    getPosition: function() {
+        var target = this[0];
+        if (target.selectionStart) {
+            //textArea
+            return {
+                pos: target.selectionStart,
+                htmlPos: target.selectionStart
+            };
+        } else {
+            //contentEditable
+            target.focus();
+            var range1 = window.getSelection().getRangeAt(0),
+                range2 = range1.cloneRange();
+            range2.selectNodeContents(target);
+            range2.setEnd(range1.endContainer, range1.endOffset);
+            return {
+                pos: range2.toString().length,
+                htmlPos: positionInHtml(range2.toString().length, this.getString())
+            };
+        }
+    },
+
+    /* Sets cursor position of target */
+    setPosition: function(pos) {
+        var target = this[0];
+        target.focus();
+        if (target.setSelectionRange) {
+            //textArea
+            target.setSelectionRange(pos, pos);
+        } else {
+            //contentEditable
+            setPositionRecursive(target, pos);
+        }
+    }
 });
+
+/* A hacky method for setting cursor position correctly. */
+function setPositionRecursive(node, pos) {
+    if (node.wholeText) {
+        if (node.wholeText.length >= pos) {
+            window.getSelection().collapse(node, pos);
+        }
+    } else {
+        for (var i = 0; i < node.childNodes.length; i++) {
+            var len = 0;
+            if (node.childNodes[i].wholeText) {
+                len = node.childNodes[i].wholeText.length;
+            } else if (node.childNodes[i].textContent) {
+                len = node.childNodes[i].textContent.length;
+            }
+            if (len < pos) {
+                pos -= len;
+            } else {
+                setPositionRecursive(node.childNodes[i], pos);
+                return;
+            }
+        }
+    }
+}
 
 function isConvertible(c) {
     var isLowerLetter = "a".charCodeAt(0) <= c && "z".charCodeAt(0) >= c;
@@ -31,7 +144,7 @@ function toMongolianCyrillic(c, prev) {
     // Both are lowercase -> merged lowercase letter (ya -> я)
     // At least one character is uppercase -> merged uppercase letter (Ya, yA, YA -> Я)
 
-    switch(String.fromCharCode(c)) {
+    switch (String.fromCharCode(c)) {
         // Lowercase letters starts here.
     case "a":
         if (prev == "ы") {
@@ -229,9 +342,15 @@ function toMongolianCyrillic(c, prev) {
 
 /* Alerts contents of an object for debugging. */
 function printObject(o) {
-    var out = '';
+    var LIMIT = 20;
+    var out = "";
+    var count = 0;
     for (var p in o) {
-        out += p + ': ' + o[p] + '\n';
+        out += p + ": " + o[p] + "\n";
+        if (++count % LIMIT == 0) {
+            alert(out);
+            out = "";
+        }
     }
     alert(out);
 }

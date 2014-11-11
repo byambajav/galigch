@@ -12,7 +12,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     toggleMode();
 });
 
-/* Enables or disables mode. */
+/* Enables or disables the mode. */
 function toggleMode() {
     enabled = !enabled;
     if (enabled) {
