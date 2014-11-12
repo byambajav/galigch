@@ -3,7 +3,7 @@
     "version": "0.2",
     "author": "Byambajav Namsraijav / Намсрайжавын Бямбажав",
     "manifest_version": 2,
-    "description": "Крилл галигаар шууд бичицгээе | krill | cyrillic",
+    "description": "Кирилл галигаар шууд бичицгээе | Mongolian cyrillic keyboard",
     "background": {
 	"scripts": ["background.js"]
     },
