@@ -1,6 +1,6 @@
 {
     "name": "Krilleer",
-    "version": "0.1",
+    "version": "0.2",
     "author": "Byambajav Namsraijav / Намсрайжавын Бямбажав",
     "manifest_version": 2,
     "description": "Крилл галигаар шууд бичицгээе | krill | cyrillic",
@@ -22,8 +22,8 @@
     "commands": {
         "toggleMode" : {
             "suggested_key": {
-                "default": "Ctrl+M",
-                "mac": "Command+M"
+                "default": "Ctrl+Q",
+                "mac": "Command+Q"
             },
             "description": "Enables or disables the mode"
         }
