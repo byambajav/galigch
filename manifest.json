@@ -7,6 +7,7 @@
     "background": {
 	"scripts": ["background.js"]
     },
+    "options_page": "pages/options.html",
     "content_scripts": [
 	{
 	    "matches": ["<all_urls>"],
@@ -26,6 +27,10 @@
             },
             "description": "Enables or disables the mode"
         }
+    },
+    "icons": {
+        "38": "icons/enabled.png",
+        "128": "icons/header.png"
     },
     "browser_action": {
 	"default_icon": "icons/disabled.png"
