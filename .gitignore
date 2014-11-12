@@ -1,2 +1,6 @@
 # Emacs tmp files
 *~
+
+# Package files
+*.pem
+*.crx
