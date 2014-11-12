@@ -17,11 +17,11 @@ function toggleMode() {
     enabled = !enabled;
     if (enabled) {
         chrome.browserAction.setIcon({
-            path: "icons/enabled.png"
+            path: "icons/enabled38.png"
         });
     } else {
         chrome.browserAction.setIcon({
-            path: "icons/disabled.png"
+            path: "icons/disabled38.png"
         });
     }
 }

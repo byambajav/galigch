@@ -1,5 +1,5 @@
 {
-    "name": "Krilleer",
+    "name": "Галигч / Galigch",
     "version": "0.2",
     "author": "Byambajav Namsraijav / Намсрайжавын Бямбажав",
     "manifest_version": 2,
@@ -29,10 +29,11 @@
         }
     },
     "icons": {
-        "38": "icons/enabled.png",
-        "128": "icons/header.png"
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
     },
     "browser_action": {
-	"default_icon": "icons/disabled.png"
+	"default_icon": "icons/disabled38.png"
     }
 }
