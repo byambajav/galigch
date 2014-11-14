@@ -1,6 +1,6 @@
 {
     "name": "Галигч / Galigch",
-    "version": "0.2",
+    "version": "0.3",
     "author": "Byambajav Namsraijav / Намсрайжавын Бямбажав",
     "manifest_version": 2,
     "description": "Кирилл галигаар шууд бичицгээе | Mongolian cyrillic keyboard",
@@ -23,7 +23,7 @@
         "toggleMode" : {
             "suggested_key": {
                 "default": "Ctrl+Q",
-                "mac": "Command+Q"
+                "mac": "Command+M"
             },
             "description": "Enables or disables the mode"
         }
